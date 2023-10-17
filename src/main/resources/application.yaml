@@ -39,4 +39,16 @@ spring:
   config:
     activate:
       on-profile: prod
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://pharmacy-recommendation-database:3306/pharmacy-recommendation
+    username: ${SPRING_DATASOURCE_USERNAME} #로컬에서 개발시 환경변수를 IDE에 추가해줘야한다.
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  redis:
+    host: pharmacy-recommendation-redis
+    port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
 # prod 에서만 사용할 설정값
