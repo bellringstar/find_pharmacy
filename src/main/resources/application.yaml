@@ -13,6 +13,11 @@ spring:
     activate:
       on-profile: common
 
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}
+
 # 공통으로 사용할 설정값
 
 ---
@@ -21,7 +26,8 @@ spring:
     activate:
       on-profile: local
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+#    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name:
     url: jdbc:mariadb://localhost:3306/pharmacy-recommendation
     username: ${SPRING_DATASOURCE_USERNAME} #로컬에서 개발시 환경변수를 IDE에 추가해줘야한다.
     password: ${SPRING_DATASOURCE_PASSWORD}
