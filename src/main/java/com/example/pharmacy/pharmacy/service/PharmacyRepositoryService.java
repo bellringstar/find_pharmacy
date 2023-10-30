@@ -1,10 +1,12 @@
 package com.example.pharmacy.pharmacy.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.pharmacy.pharmacy.entity.Pharmacy;
 import com.example.pharmacy.pharmacy.repository.PharmacyRepository;
@@ -40,6 +42,22 @@ public class PharmacyRepositoryService {
 		}
 
 		entity.changePharmacyAddress(address);
+	}
+
+	// self invocation test
+	public void bar(List<Pharmacy> pharmacyList) {
+		log.info("bar CurrentTransactionName: " + TransactionSynchronizationManager.getCurrentTransactionName());
+		foo(pharmacyList);
+	}
+
+	// self invocation test
+	@Transactional
+	public void foo(List<Pharmacy> pharmacyList) {
+		log.info("foo CurrentTransactionName: "+ TransactionSynchronizationManager.getCurrentTransactionName());
+		pharmacyList.forEach(pharmacy -> {
+			pharmacyRepository.save(pharmacy);
+			throw new RuntimeException("error"); // 예외 발생
+		});
 	}
 
 }
