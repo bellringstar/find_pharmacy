@@ -3,7 +3,6 @@ package com.example.pharmacy.pharmacy.service;
 import java.util.List;
 import java.util.Objects;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -53,7 +52,7 @@ public class PharmacyRepositoryService {
 	// self invocation test
 	@Transactional
 	public void foo(List<Pharmacy> pharmacyList) {
-		log.info("foo CurrentTransactionName: "+ TransactionSynchronizationManager.getCurrentTransactionName());
+		log.info("foo CurrentTransactionName: " + TransactionSynchronizationManager.getCurrentTransactionName());
 		pharmacyList.forEach(pharmacy -> {
 			pharmacyRepository.save(pharmacy);
 			throw new RuntimeException("error"); // 예외 발생
