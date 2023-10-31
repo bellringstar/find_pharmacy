@@ -3,9 +3,9 @@ package com.example.pharmacy.pharmacy.service;
 import java.util.List;
 import java.util.Objects;
 
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.pharmacy.pharmacy.entity.Pharmacy;
@@ -58,6 +58,11 @@ public class PharmacyRepositoryService {
 			pharmacyRepository.save(pharmacy);
 			throw new RuntimeException("error"); // 예외 발생
 		});
+	}
+
+	@Transactional(readOnly = true)
+	public List<Pharmacy> findAll() {
+		return pharmacyRepository.findAll();
 	}
 
 }
