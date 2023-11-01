@@ -1,5 +1,8 @@
 package com.example.pharmacy.pharmacy.cache;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
@@ -45,6 +48,19 @@ public class PharmacyRedisTemplateService {
 			log.info("[PharmacyRedisTemplateService save success] id: {}", pharmacyDto.getId());
 		} catch (Exception e) {
 			log.error("[PharmacyRedisTemplateService save fail] {}", e.getMessage());
+		}
+	}
+
+	public List<PharmacyDto> findAll() {
+		try {
+			List<PharmacyDto> list = new ArrayList<>();
+			for (String value : hashOperations.entries(CACHE_KEY).values()) {
+				PharmacyDto pharmacyDto = deserializePharmacyDto(value);
+				list.add(pharmacyDto);
+			}
+		} catch (Exception e) {
+			log.error("[PharmacyRedisTemplateService findAll fail]: {}", e.getMessage());
+			return Collections.emptyList();
 		}
 	}
 
