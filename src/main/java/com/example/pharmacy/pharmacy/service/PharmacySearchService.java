@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pharmacy.pharmacy.cache.PharmacyRedisTemplateService;
 import com.example.pharmacy.pharmacy.dto.PharmacyDto;
 import com.example.pharmacy.pharmacy.entity.Pharmacy;
 
@@ -17,8 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PharmacySearchService {
 
 	private final PharmacyRepositoryService pharmacyRepositoryService;
+	private final PharmacyRedisTemplateService pharmacyRedisTemplateService;
 
 	public List<PharmacyDto> searchPharmacyDtoList() {
+
+		//redis
+		List<PharmacyDto> pharmacyDtoList = pharmacyRedisTemplateService.findAll();
+		if (!pharmacyDtoList.isEmpty()) return pharmacyDtoList;
+
 		return pharmacyRepositoryService.findAll()
 			.stream()
 			.map(this::convertToPharmacyDto)
