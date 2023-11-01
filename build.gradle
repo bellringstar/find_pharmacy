@@ -36,6 +36,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // https://github.com/seruco/base62
     implementation 'io.seruco.encoding:base62:0.1.3'
 
