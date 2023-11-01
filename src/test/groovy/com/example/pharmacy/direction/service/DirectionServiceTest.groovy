@@ -1,15 +1,25 @@
 package com.example.pharmacy.direction.service
 
 import com.example.pharmacy.api.dto.DocumentDto
+import com.example.pharmacy.api.service.KakaoCategorySearchService
+import com.example.pharmacy.direction.repository.DirectionRepository
 import com.example.pharmacy.pharmacy.dto.PharmacyDto
 import com.example.pharmacy.pharmacy.service.PharmacySearchService
 import spock.lang.Specification
+import spock.lang.Subject
 
 class DirectionServiceTest extends Specification {
 
     private PharmacySearchService pharmacySearchService = Mock()
-    private DirectionService directionService = new DirectionService(pharmacySearchService)
+    private DirectionRepository directionRepository = Mock()
+    private Base62Service base62Service = Mock()
 
+    private KakaoCategorySearchService kakaoCategorySearchService = Mock()
+
+    @Subject
+    private DirectionService directionService = new DirectionService(
+            pharmacySearchService, directionRepository,
+            base62Service, kakaoCategorySearchService)
 
     private List<PharmacyDto> pharmacyList
 

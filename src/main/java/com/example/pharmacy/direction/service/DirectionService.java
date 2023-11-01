@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.pharmacy.api.dto.DocumentDto;
 import com.example.pharmacy.api.service.KakaoCategorySearchService;
@@ -26,11 +27,13 @@ public class DirectionService {
 
 	private static final int MAX_SEARCH_COUNT = 3;// 약국 최대 검색 갯수
 	private static final double RADIUS_KM = 10.0;// 반경 10km
+	private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
+
 
 	private final PharmacySearchService pharmacySearchService;
 	private final DirectionRepository directionRepository;
-
 	private final KakaoCategorySearchService kakaoCategorySearchService;
+	private final Base62Service base62Service;
 
 	@Transactional
 	public List<Direction> saveAll(List<Direction> directionList) {
@@ -39,6 +42,18 @@ public class DirectionService {
 		}
 
 		return directionRepository.saveAll(directionList);
+	}
+
+	public String findDirectionUrlById(String encodedId) {
+		Long directionId = base62Service.decodeDirectionId(encodedId);
+		Direction direction = directionRepository.findById(directionId).orElse(null);
+		String params = String.join(",", direction.getTargetPharmacyName(),
+			String.valueOf(direction.getTargetLatitude()),
+			String.valueOf(direction.getTargetLongitude())
+		);
+		String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + params)
+			.toUriString();
+		return result;
 	}
 
 	public List<Direction> buildDirectionList(DocumentDto documentDto) {
