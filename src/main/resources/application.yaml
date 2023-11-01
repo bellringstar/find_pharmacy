@@ -38,6 +38,9 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+pharmacy:
+  recommendation:
+    base: http://localhost:8080/dir/
 
 # 로컬에서만 사용할 설정값
 ---
